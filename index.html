@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop ACC Reg Liên Quân</title>
+    <style>
+        /* Thiết lập font chữ và khoảng cách cơ bản */
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        /* Phần Header */
+        .shop-header {
+            margin-bottom: 20px;
+        }
+        .shop-header h2 {
+            font-size: 18px;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+        .shop-header a {
+            color: #0000EE;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+        
+        /* Đường kẻ ngang */
+        .divider-solid {
+            border: 0;
+            border-top: 2px solid #5b8cd6;
+            margin: 20px 0;
+        }
+        .divider-dashed {
+            border: 0;
+            border-top: 1px dashed #ccc;
+            margin: 20px 0;
+        }
+
+        /* Phần Danh sách sản phẩm (Grid) */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        /* Thiết kế từng thẻ sản phẩm */
+        .product-item {
+            text-align: center;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 8px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .product-item:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+        }
+
+        /* Khung ảnh thu nhỏ */
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover; /* Cắt ảnh cho vuông vắn */
+            border-radius: 4px;
+            margin-bottom: 15px;
+            cursor: pointer; /* Đổi con trỏ chuột thành hình bàn tay để biết có thể bấm */
+            transition: transform 0.2s;
+        }
+
+        .product-image:hover {
+            transform: scale(1.02); /* Hiệu ứng phóng to nhẹ khi đưa chuột vào */
+        }
+
+        /* Tiêu đề sản phẩm (Màu đỏ) */
+        .product-title {
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 15px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            min-height: 40px;
+        }
+
+        /* Phần số lượng và giá */
+        .product-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            padding: 0 10px;
+            margin-bottom: 15px;
+        }
+
+        .quantity {
+            font-style: italic;
+            color: #666;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #d32f2f;
+            font-size: 16px;
+        }
+
+        /* Nút Mua Ngay */
+        .btn-buy {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            background-color: #ff5722;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-buy:hover {
+            background-color: #e64a19;
+        }
+
+        /* --- CSS CHO PHẦN XEM FULL ẢNH (LIGHTBOX) --- */
+        .lightbox {
+            display: none; /* Ẩn mặc định */
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85); /* Nền đen mờ */
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out; /* Con trỏ chuột hình thu nhỏ */
+        }
+
+        .lightbox img {
+            max-width: 95%; /* Không vượt quá 95% màn hình */
+            max-height: 95%;
+            object-fit: contain; /* Hiển thị TOÀN BỘ ảnh, không bị cắt */
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            animation: zoomIn 0.3s ease;
+        }
+
+        /* Hiệu ứng phóng to ảnh */
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Nút đóng (X) */
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-lightbox:hover {
+            color: #ff5722;
+        }
+
+        /* Responsive cho điện thoại */
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            .close-lightbox {
+                top: 10px;
+                right: 20px;
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Phần Header -->
+    <div class="shop-header">
+        <h2>SHOP ACC REG LIÊN QUÂN</h2>
+        <p><a href="http://TUANLIQI.IO.VN" target="_blank">TUANLIQI.IO.VN</a> XIN CHÀO CÁC BẠN</p>
+        <p>ZALO HỖ TRỢ : 0867600420</p>
+        <p>CÁCH DÙNG TÀI KHOẢN TRÊN SHOP</p>
+        <p>TK|MK|TK MAIL|PASS MAIL</p>
+    </div>
+
+    <hr class="divider-solid">
+    <hr class="divider-dashed">
+
+    <!-- Phần Danh sách sản phẩm -->
+    <div class="product-grid">
+        
+        <!-- Sản phẩm 1 -->
+        <div class="product-item">
+            <!-- Thêm onclick="openLightbox(this.src)" để kích hoạt xem full ảnh -->
+            <img src="anh1.jpg" alt="ACC TACHI Benimaru" class="product-image" onclick="openLightbox(this.src)">
+            <div class="product-title">
+                ACC TACHI Benimaru [ HỢP TÁC GIỚI HẠN ]<br>
+                NAK Lôi Quang Sứ
+            </div>
+            <div class="product-info">
+                <span class="quantity">Số lượng : 1</span>
+                <span class="price">270.000 D</span>
+            </div>
+            <a href="https://zalo.me/0867600420" target="_blank" class="btn-buy">Mua Ngay</a>
+        </div>
+
+        <!-- Sản phẩm 2 -->
+        <div class="product-item">
+            <img src="anh2.jpg" alt="NAK Lôi Quang Sứ" class="product-image" onclick="openLightbox(this.src)">
+            <div class="product-title">
+                NAK Lôi Quang Sứ
+            </div>
+            <div class="product-info">
+                <span class="quantity">Số lượng : 5</span>
+                <span class="price">20.000 D</span>
+            </div>
+            <a href="https://zalo.me/0867600420" target="_blank" class="btn-buy">Mua Ngay</a>
+        </div>
+
+        <!-- Sản phẩm 3 -->
+        <div class="product-item">
+            <img src="anh3.jpg" alt="MU Chí Tôn" class="product-image" onclick="openLightbox(this.src)">
+            <div class="product-title">
+                MU Chí Tôn
+            </div>
+            <div class="product-info">
+                <span class="quantity">Số lượng : 1</span>
+                <span class="price">30.000 D</span>
+            </div>
+            <a href="https://zalo.me/0867600420" target="_blank" class="btn-buy">Mua Ngay</a>
+        </div>
+
+    </div>
+
+    <!-- Khung chứa ảnh Full (Mặc định bị ẩn) -->
+    <div id="myLightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close-lightbox">&times;</span>
+        <img id="fullImage" src="" alt="Full Image">
+    </div>
+
+    <!-- Đoạn mã JavaScript điều khiển việc bật/tắt ảnh -->
+    <script>
+        // Hàm mở ảnh full
+        function openLightbox(imageSrc) {
+            var lightbox = document.getElementById("myLightbox");
+            var fullImage = document.getElementById("fullImage");
+            
+            fullImage.src = imageSrc; // Lấy đường dẫn ảnh nhỏ gán vào ảnh lớn
+            lightbox.style.display = "flex"; // Hiển thị khung đen
+        }
+
+        // Hàm đóng ảnh full
+        function closeLightbox() {
+            var lightbox = document.getElementById("myLightbox");
+            lightbox.style.display = "none"; // Ẩn khung đen
+        }
+    </script>
+
+</body>
+</html>
